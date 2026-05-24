@@ -10,9 +10,28 @@ public class AuthService : IAuthService
     private readonly IApplicationDbContext _context; // <-- Ahora es la interfaz
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-    public Task<string> LoginAsync(LoginDto loginDto)
+    public AuthService(
+        IApplicationDbContext context,
+        IJwtTokenGenerator jwtTokenGenerator)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _jwtTokenGenerator = jwtTokenGenerator;
+}
+
+    public async Task<string> LoginAsync(LoginDto loginDto)
+    {
+        // 1. Buscar al usuario por su email
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == loginDto.Email);
+        
+        // 2. Si no existe, o si la contraseña no coincide, lanzamos un error genérico por seguridad.
+        // Tip de seguridad: No le digas al atacante exactamente qué falló (si el email o la clave).
+        if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
+        {
+            throw new Exception("Credenciales incorrectas."); // Luego lo cambiaremos por una excepción personalizada
+        }
+
+        // 3. Generar y retornar el token JWT si todo está en orden
+        return _jwtTokenGenerator.GenerateToken(user);
     }
 
     public async Task<string> RegisterAsync(RegisterDto registerDto)

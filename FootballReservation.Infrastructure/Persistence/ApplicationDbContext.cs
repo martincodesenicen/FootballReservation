@@ -1,10 +1,11 @@
 using System.Reflection;
+using FootballReservation.Application.Common;
 using FootballReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FootballReservation.Infrastructure.Persistence;
 
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

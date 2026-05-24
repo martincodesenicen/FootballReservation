@@ -85,7 +85,19 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin()   // En producción pondrías la URL de tu web, para desarrollo esto está perfecto
+              .AllowAnyMethod()   // Permite GET, POST, PUT, DELETE
+              .AllowAnyHeader();  // Permite pasar el token JWT en las cabeceras
+    });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowFrontend");
 
 if (app.Environment.IsDevelopment())
 {

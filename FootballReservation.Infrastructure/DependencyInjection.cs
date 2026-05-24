@@ -1,6 +1,7 @@
 using FootballReservation.Application.Common;
 using FootballReservation.Infrastructure.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using FootballReservation.Infrastructure.Repositories;
 
 namespace FootballReservation.Infrastructure;
 
@@ -10,7 +11,9 @@ public static class DependencyInjection
     {
         // Registramos el generador de tokens vinculándolo a su interfaz de la capa Application
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-        
+        services.AddScoped<IFieldRepository, FieldRepository>();
         return services;
     }
+
+    
 }

@@ -1,3 +1,5 @@
+using System.Reflection;
+using FluentValidation;
 using FootballReservation.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IFieldService, FieldService>();
         services.AddScoped<IReservationService, ReservationService>();
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }
 }

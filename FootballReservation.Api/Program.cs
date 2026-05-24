@@ -1,5 +1,7 @@
 using FootballReservation.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using FootballReservation.Application;
+using FootballReservation.Infrastructure;
 using FootballReservation.Application.Common;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

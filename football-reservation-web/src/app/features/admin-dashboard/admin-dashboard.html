@@ -1,0 +1,45 @@
+<div class="admin-container">
+  <header class="admin-header">
+    <h1>Panel de Administración</h1>
+    <p>Alta de nuevas canchas en el sistema</p>
+  </header>
+
+  <main class="admin-content">
+    <div class="form-card">
+      <h2>Registrar Cancha</h2>
+
+      @if (successMessage) {
+        <div class="alert alert-success">{{ successMessage }}</div>
+      }
+      @if (errorMessage) {
+        <div class="alert alert-danger">{{ errorMessage }}</div>
+      }
+
+      <form [formGroup]="fieldForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="name">Nombre de la Cancha</label>
+          <input id="name" type="text" formControlName="name" placeholder="Ej: Cancha Maracaná" />
+        </div>
+
+        <div class="form-group">
+          <label for="capacity">Capacidad / Tipo</label>
+          <select id="capacity" formControlName="capacity">
+            <option value="">Selecciona el tipo de cancha</option>
+            <option value="Fútbol 5">Fútbol 5</option>
+            <option value="Fútbol 7">Fútbol 7</option>
+            <option value="Fútbol 11">Fútbol 11</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Precio por Hora ($)</label>
+          <input id="price" type="number" formControlName="pricePerHour" />
+        </div>
+
+        <button type="submit" [disabled]="fieldForm.invalid" class="btn-submit">
+          Guardar Cancha
+        </button>
+      </form>
+    </div>
+  </main>
+</div>

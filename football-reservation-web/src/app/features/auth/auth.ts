@@ -37,30 +37,59 @@ export class AuthComponent {
 
   onSubmit() {
     this.errorMessage = '';
+    console.log('--- Iniciando envío de formulario ---');
+    console.log('Modo Login:', this.isLoginMode);
 
     if (this.isLoginMode) {
-      if (this.loginForm.invalid) return;
-      
-  this.authService.login(this.loginForm.value).subscribe({
-    next: (userProfile) => {
-      if (userProfile.role === 'Admin') {
-        this.router.navigate(['/admin-dashboard']);
-      } else {
-        this.router.navigate(['/customer-dashboard']);
+      if (this.loginForm.invalid) {
+        console.warn('Formulario de login inválido:', this.loginForm.errors);
+        this.errorMessage = 'Por favor, completa correctamente los campos.';
+        return;
       }
-    },
-    error: (err) => {
-      this.errorMessage = err.error?.message || 'Error al iniciar sesión. Verifica tus credenciales.';
-    }
-  });
-    } else {
-      if (this.registerForm.invalid) return;
+      
+      console.log('Enviando credenciales:', this.loginForm.value);
 
-      this.authService.register(this.registerForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
+      this.authService.login(this.loginForm.value).subscribe({
+      next: (userProfile) => {
+          console.log('¡Login Exitoso! Perfil recibido del backend:', userProfile);
+          
+          const role = userProfile.role || (userProfile as any).Role;
+          console.log('Rol detectado:', role);
+
+          if (role === 'Admin') {
+            console.log('Redirigiendo a panel de Administrador...');
+            this.router.navigate(['/admin-dashboard']);
+          } else if (role === 'Client') { // <-- Cambiado de 'Customer' a 'Client'
+            console.log('Redirigiendo a panel de Cliente...');
+            this.router.navigate(['/customer-dashboard']);
+          } else {
+            console.warn('Rol desconocido recibido:', role);
+          }
         },
         error: (err) => {
+          console.error('Error atrapado en el componente:', err);
+          this.errorMessage = err.error?.message || 'Error al iniciar sesión. Verifica tus credenciales o conexión con el servidor.';
+        }
+      });
+    } else {
+      if (this.registerForm.invalid) {
+        console.warn('Formulario de registro inválido:', this.registerForm.errors);
+        return;
+      }
+
+      this.authService.register(this.registerForm.value).subscribe({
+        next: (userProfile) => {
+          console.log('¡Registro Exitoso! Perfil recibido:', userProfile);
+          const role = userProfile.role || (userProfile as any).Role;
+          
+          if (role === 'Admin') {
+            this.router.navigate(['/admin-dashboard']);
+          } else {
+            this.router.navigate(['/customer-dashboard']);
+          }
+        },
+        error: (err) => {
+          console.error('Error en el registro:', err);
           this.errorMessage = err.error?.message || 'Error en el registro. Inténtalo de nuevo.';
         }
       });

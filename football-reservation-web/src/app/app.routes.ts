@@ -9,12 +9,12 @@ export const routes: Routes = [
   { 
     path: 'customer-dashboard', 
     loadComponent: () => import('./features/customer-dashboard/customer-dashboard').then(m => m.CustomerDashboardComponent),
-    canActivate: [authGuard(['Customer'])] // Ajusta según el string exacto de tus clientes (ej: Customer o User)
+    canActivate: [authGuard(['Client'])] // <-- Cambiado de 'Customer' a 'Client'
   },
   { 
     path: 'admin-dashboard', 
     loadComponent: () => import('./features/admin-dashboard/admin-dashboard').then(m => m.AdminDashboardComponent),
-    canActivate: [authGuard(['Admin'])] // Protegido estrictamente para el rol "Admin"
+    canActivate: [authGuard(['Admin'])] 
   },
   { 
     path: '', 

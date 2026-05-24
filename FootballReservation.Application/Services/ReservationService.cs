@@ -1,6 +1,7 @@
 using FootballReservation.Application.Common;
 using FootballReservation.Application.DTOs;
 using FootballReservation.Domain.Entities;
+using FootballReservation.Domain.Exceptions;
 
 namespace FootballReservation.Application.Services;
 
@@ -26,14 +27,14 @@ public class ReservationService : IReservationService
         var field = await _fieldRepository.GetByIdAsync(dto.FieldId);
         if (field == null || !field.IsActive)
         {
-            throw new Exception("La cancha seleccionada no está disponible.");
+            throw new NotFoundException("La cancha seleccionada no existe o no está disponible.");
         }
 
         // 2. Validar que el horario no esté ocupado
         var isAvailable = await _reservationRepository.IsSlotAvailableAsync(dto.FieldId, dto.ReservationDate, dto.DurationInHours);
         if (!isAvailable)
         {
-            throw new Exception("El horario seleccionado ya se encuentra reservado.");
+            throw new BadRequestException("El horario seleccionado ya se encuentra reservado.");
         }
 
         // 3. Calcular el precio total en el Backend (Regla de negocio)

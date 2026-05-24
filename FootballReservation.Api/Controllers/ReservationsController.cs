@@ -18,6 +18,7 @@ public class ReservationsController : ControllerBase
         _reservationService = reservationService;
     }
 
+    /*
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReservationDto dto)
     {
@@ -38,7 +39,22 @@ public class ReservationsController : ControllerBase
             return BadRequest(new { Message = ex.Message });
         }
     }
+    */
 
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateReservationDto dto)
+    {
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
+        {
+            return Unauthorized(new { Message = "Usuario no válido en el token." });
+        }
+
+        // Ya no hay try-catch. Si el servicio lanza BadRequestException, el middleware se encarga.
+        var result = await _reservationService.CreateReservationAsync(userId, dto);
+        return Ok(result);
+    }
+    
     [HttpGet("my-bookings")]
     public async Task<IActionResult> GetMyBookings()
     {

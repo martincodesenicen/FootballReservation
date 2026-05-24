@@ -6,6 +6,7 @@ using FootballReservation.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using FootballReservation.Api.Middlewares;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -91,6 +92,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // 4. Habilitar Middlewares de Seguridad (¡EL ORDEN IMPORTA AQUÍ!)
 app.UseAuthentication(); // Primero: ¿Quién sos? (Valida el Token)

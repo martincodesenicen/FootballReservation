@@ -2,6 +2,7 @@ using FootballReservation.Application.Common; // Usamos la interfaz
 using FootballReservation.Application.DTOs;
 using FootballReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using FootballReservation.Domain.Exceptions;
 
 namespace FootballReservation.Application.Services;
 
@@ -27,7 +28,7 @@ public class AuthService : IAuthService
         // Tip de seguridad: No le digas al atacante exactamente qué falló (si el email o la clave).
         if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
         {
-            throw new Exception("Credenciales incorrectas."); // Luego lo cambiaremos por una excepción personalizada
+           throw new BadRequestException("Credenciales incorrectas.");
         }
 
         // 3. Generar y retornar el token JWT si todo está en orden
@@ -39,7 +40,7 @@ public class AuthService : IAuthService
         var userExists = await _context.Users.AnyAsync(u => u.Email == registerDto.Email);
         if (userExists)
         {
-            throw new Exception("El email ya se encuentra registrado.");
+            throw new BadRequestException("El email ya se encuentra registrado.");
         }
 
         string passwordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password);

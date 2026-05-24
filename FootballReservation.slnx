@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="FootballReservation.Api/FootballReservation.Api.csproj" />
+  <Project Path="FootballReservation.Application/FootballReservation.Application.csproj" />
+  <Project Path="FootballReservation.Domain/FootballReservation.Domain.csproj" />
+  <Project Path="FootballReservation.Infrastructure/FootballReservation.Infrastructure.csproj" />
+</Solution>

@@ -32,7 +32,7 @@ export class AuthService {
 
   private setSession(authResult: AuthResponse): void {
     localStorage.setItem('token', authResult.token);
-    localStorage.setItem('user', JSON.stringify(authResult.user));
+    // Nota: El rol lo extraeremos del JWT en el siguiente paso cuando configuremos los Guards.
   }
 
   getToken(): string | null {

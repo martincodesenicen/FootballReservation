@@ -1,0 +1,57 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>{{ isLoginMode ? 'Iniciar Sesión' : 'Registrarse' }}</h2>
+
+    @if (errorMessage) {
+      <div class="error-banner">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (isLoginMode) {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Contraseña</label>
+          <input id="login-password" type="password" formControlName="password" placeholder="******" />
+        </div>
+
+        <button type="submit" [disabled]="loginForm.invalid">Entrar</button>
+      </form>
+    } @else {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="reg-firstName">Nombre</label>
+          <input id="reg-firstName" type="text" formControlName="firstName" placeholder="Juan" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-lastName">Apellido</label>
+          <input id="reg-lastName" type="text" formControlName="lastName" placeholder="Pérez" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <input id="reg-email" type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Contraseña (Mín. 6 caracteres)</label>
+          <input id="reg-password" type="password" formControlName="password" placeholder="******" />
+        </div>
+
+        <button type="submit" [disabled]="registerForm.invalid">Crear Cuenta</button>
+      </form>
+    }
+
+    <div class="toggle-mode">
+      <button class="btn-link" (click)="toggleMode()">
+        {{ isLoginMode ? '¿No tienes cuenta? Regístrate aquí' : '¿Ya tienes cuenta? Inicia sesión' }}
+      </button>
+    </div>
+  </div>
+</div>

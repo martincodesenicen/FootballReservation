@@ -13,3 +13,10 @@ export interface RegisterDto {
 export interface AuthResponse {
   token: string;
 }
+
+export interface UserProfile {
+  message: string;
+  userId: string;
+  email: string;
+  role: string;
+}

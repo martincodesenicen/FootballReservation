@@ -1,49 +1,48 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { AuthResponse, LoginDto, RegisterDto } from '../models/auth.models';
+import { Observable, tap, switchMap, map } from 'rxjs';
+import { AuthResponse, LoginDto, RegisterDto, UserProfile } from '../models/auth.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient);
-  // Reemplaza con la URL exacta en la que corra tu FootballReservation.Api (ej. https://localhost:7001)
-  private apiUrl = 'http://localhost:5035/api/auth'; 
+  // Ajusta el puerto base si tu backend corre en otro (ej: 7134, 5001)
+  private baseUrl = 'http://localhost:5035/api'; 
 
-  constructor() {}
-
-  login(credentials: LoginDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
-      tap(response => this.setSession(response))
+  login(credentials: LoginDto): Observable<UserProfile> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/login`, credentials).pipe(
+      tap(response => localStorage.setItem('token', response.token)),
+      // Una vez guardado el token, el interceptor lo leerá para la siguiente petición:
+      switchMap(() => this.getUserProfile()) 
     );
   }
 
-  register(userData: RegisterDto): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData).pipe(
-      tap(response => this.setSession(response))
+  register(userData: RegisterDto): Observable<UserProfile> {
+    return this.http.post<AuthResponse>(`${this.baseUrl}/auth/register`, userData).pipe(
+      tap(response => localStorage.setItem('token', response.token)),
+      switchMap(() => this.getUserProfile())
+    );
+  }
+
+  getUserProfile(): Observable<UserProfile> {
+    return this.http.get<UserProfile>(`${this.baseUrl}/users/me`).pipe(
+      tap(profile => localStorage.setItem('user', JSON.stringify(profile)))
     );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  }
-
-  private setSession(authResult: AuthResponse): void {
-    localStorage.setItem('token', authResult.token);
-    // Nota: El rol lo extraeremos del JWT en el siguiente paso cuando configuremos los Guards.
+    localStorage.clear();
   }
 
   getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  getUserRole(): string | null {
+  getUser(): UserProfile | null {
     const userJson = localStorage.getItem('user');
-    if (!userJson) return null;
-    const user = JSON.parse(userJson);
-    return user.role;
+    return userJson ? JSON.parse(userJson) : null;
   }
 
   isLoggedIn(): boolean {

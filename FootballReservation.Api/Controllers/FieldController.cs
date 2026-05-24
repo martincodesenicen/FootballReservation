@@ -33,7 +33,7 @@ public class FieldsController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")] // Restringido: Solo administradores pueden agregar canchas. Está comentado porque todavia no sé cómo registrar alguien como administrador.
+    [Authorize(Roles = "Admin")] // Restringido: Solo administradores pueden agregar canchas.
     public async Task<IActionResult> Create([FromBody] CreateFieldDto createFieldDto)
     {
         var newField = await _fieldService.CreateFieldAsync(createFieldDto);

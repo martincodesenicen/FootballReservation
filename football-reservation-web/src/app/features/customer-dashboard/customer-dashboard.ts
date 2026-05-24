@@ -5,6 +5,8 @@ import { FieldService } from '../../core/services/field';
 import { ReservationService } from '../../core/services/reservation';
 import { FieldDto } from '../../core/models/field.models';
 import { ReservationDto } from '../../core/models/reservation.models';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -17,6 +19,8 @@ export class CustomerDashboardComponent implements OnInit {
   private fb = inject(FormBuilder);
   private fieldService = inject(FieldService);
   private reservationService = inject(ReservationService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
   fields: FieldDto[] = [];
   myBookings: ReservationDto[] = [];
@@ -47,6 +51,11 @@ export class CustomerDashboardComponent implements OnInit {
       next: (data) => this.myBookings = data,
       error: () => this.errorMessage = 'No se pudo cargar tu historial de reservas.'
     });
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/auth']);
   }
 
   onSubmit(): void {

@@ -1,1 +1,84 @@
-<p>customer-dashboard works!</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Panel de Clientes</h1>
+    <p>Reserva tu cancha de fútbol de forma rápida y sencilla</p>
+  </header>
+
+  @if (successMessage) {
+    <div class="alert alert-success">{{ successMessage }}</div>
+  }
+  @if (errorMessage) {
+    <div class="alert alert-danger">{{ errorMessage }}</div>
+  }
+
+  <div class="dashboard-grid">
+    <section class="booking-card">
+      <h2>Nueva Reserva</h2>
+      <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+        
+        <div class="form-group">
+          <label for="fieldId">Seleccionar Cancha</label>
+          <select id="fieldId" formControlName="fieldId">
+            <option value="">-- Elige una cancha disponible --</option>
+            @for (field of fields; track field.id) {
+              <option [value]="field.id">
+                {{ field.name }} ({{ field.capacity }}) - {{ field.pricePerHour | currency }} / hr
+              </option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reservationDate">Fecha y Hora de Inicio</label>
+          <input id="reservationDate" type="datetime-local" formControlName="reservationDate" />
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Duración (Horas, Máx. 4)</label>
+          <input id="duration" type="number" formControlName="durationInHours" min="1" max="4" />
+        </div>
+
+        <button type="submit" [disabled]="bookingForm.invalid" class="btn-primary">
+          Confirmar Turno
+        </button>
+      </form>
+    </section>
+
+    <section class="history-card">
+      <h2>Mis Reservas</h2>
+      
+      @if (myBookings.length === 0) {
+        <p class="no-data">Aún no has realizado ninguna reserva.</p>
+      } @else {
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Cancha</th>
+                <th>Fecha / Hora</th>
+                <th>Duración</th>
+                <th>Total</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (booking of myBookings; track booking.id) {
+                <tr>
+                  <td><strong>{{ booking.fieldName }}</strong></td>
+                  <td>{{ booking.reservationDate | date: 'dd/MM/yyyy HH:mm' }}</td>
+                  <td>{{ booking.durationInHours }} hr</td>
+                  <td>{{ booking.totalPrice | currency }}</td>
+                  <td>
+                    <span class="badge" [class.badge-active]="booking.status === 'Active'">
+                      {{ booking.status }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    </section>
+  </div>
+</div>

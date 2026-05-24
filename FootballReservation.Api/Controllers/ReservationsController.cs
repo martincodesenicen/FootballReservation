@@ -18,29 +18,6 @@ public class ReservationsController : ControllerBase
         _reservationService = reservationService;
     }
 
-    /*
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateReservationDto dto)
-    {
-        try
-        {
-            // Extraemos el ID del usuario directamente desde el token JWT autenticado
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out int userId))
-            {
-                return Unauthorized(new { Message = "Usuario no válido en el token." });
-            }
-
-            var result = await _reservationService.CreateReservationAsync(userId, dto);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(new { Message = ex.Message });
-        }
-    }
-    */
-
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateReservationDto dto)
     {

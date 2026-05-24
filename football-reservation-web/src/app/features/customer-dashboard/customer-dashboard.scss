@@ -1,0 +1,93 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.dashboard-header {
+  border-bottom: 2px solid #e2e8f0;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  h1 { color: #0f172a; margin: 0 0 0.5rem 0; }
+  p { color: #475569; margin: 0; }
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 400px 1fr;
+  }
+}
+
+.booking-card, .history-card {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  h2 { margin-top: 0; margin-bottom: 1.5rem; color: #1e293b; }
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  label { margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: #334155; }
+  input, select {
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    &:focus { outline: none; border-color: #10b981; }
+  }
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 0.85rem;
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  &:hover:not(:disabled) { background-color: #059669; }
+  &:disabled { background-color: #cbd5e1; cursor: not-allowed; }
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  &-success { background-color: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+  &-danger { background-color: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  th, td { padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+  th { background-color: #f8fafc; color: #64748b; font-size: 0.85rem; text-transform: uppercase; }
+}
+
+.no-data { color: #64748b; font-style: italic; }
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: #e2e8f0;
+  color: #475569;
+  &-active { background-color: #dcfce7; color: #15803d; }
+}

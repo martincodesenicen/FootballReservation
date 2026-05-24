@@ -1,0 +1,22 @@
+export interface LoginDto {
+  email: string;
+  password:  string;
+}
+
+export interface RegisterDto {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password:  string;
+}
+
+export interface AuthResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    role: string; // Util para redirigir a cliente o admin
+  };
+}

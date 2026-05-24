@@ -12,6 +12,7 @@ public static class DependencyInjection
         // Registramos el generador de tokens vinculándolo a su interfaz de la capa Application
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IFieldRepository, FieldRepository>();
+        services.AddScoped<IReservationRepository, ReservationRepository>();
         return services;
     }
 

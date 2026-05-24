@@ -41,14 +41,18 @@ export class AuthComponent {
     if (this.isLoginMode) {
       if (this.loginForm.invalid) return;
       
-      this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']); // Definiremos esta ruta pronto
-        },
-        error: (err) => {
-          this.errorMessage = err.error?.message || 'Error al iniciar sesión. Verifica tus credenciales.';
-        }
-      });
+  this.authService.login(this.loginForm.value).subscribe({
+    next: (userProfile) => {
+      if (userProfile.role === 'Admin') {
+        this.router.navigate(['/admin-dashboard']);
+      } else {
+        this.router.navigate(['/customer-dashboard']);
+      }
+    },
+    error: (err) => {
+      this.errorMessage = err.error?.message || 'Error al iniciar sesión. Verifica tus credenciales.';
+    }
+  });
     } else {
       if (this.registerForm.invalid) return;
 

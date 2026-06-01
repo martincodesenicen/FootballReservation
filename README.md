@@ -1,5 +1,3 @@
-Estaba haciendo mi README.md y en la ultima parte como que se me desformatearon las cosas. Podrías formatearlas? No agregues ni cambies informacion, solo ponles el formato que corresponda
-
 # ⚽ Sistema de Reservas de Canchas de Fútbol (Fullstack MVP)
 
 Este es un ecosistema completo para la gestión y reserva de canchas de fútbol. Está compuesto por un backend robusto en **.NET 8** diseñado bajo los principios de **Clean Architecture** y una aplicación web moderna y reactiva en **Angular**.

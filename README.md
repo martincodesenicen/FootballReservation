@@ -1,57 +1,57 @@
-# ⚽ Sistema de Reservas de Canchas de Fútbol (Fullstack MVP)
+# ⚽ Sistema de Reservas de Canchas de Fútbol
 
-Este es un ecosistema completo para la gestión y reserva de canchas de fútbol. Está compuesto por un backend robusto en **.NET 8** diseñado bajo los principios de **Clean Architecture** y una aplicación web moderna y reactiva en **Angular**.
+Este es un ecosistema completo para la gestión y reserva de canchas de fútbol. Está compuesto por un backend en **.NET 8** diseñado bajo los principios de **Clean Architecture** y una aplicación web en **Angular**.
 
 ---
 
-## 🚀 Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
-### 🨔 Backend (.NET 8 Web API)
+### Backend (.NET 8 Web API)
 - **Entity Framework Core** (Code-First con SQL Server)
 - **JWT (JSON Web Tokens)** para Autenticación y Autorización por Roles (`Client` y `Admin`)
 - **BCrypt.Net** para el hashing seguro de contraseñas
 - **FluentValidation** para la validación automática de datos de entrada
 - **Middleware Global** para el manejo centralizado de excepciones y errores de negocio
 
-### 🅰 Frontend (Angular SPA)
+### Frontend (Angular SPA)
 - **Angular (Última Versión)** basada al 100% en **Standalone Components** (sin NgModules)
-- **Nuevo flujo de control de Angular** (`@if`, `@for`) para una renderización de UI ultra eficiente
+- **Nuevo flujo de control de Angular** (`@if`, `@for`) para una renderización de UI eficiente
 - **Formularios Reactivos** con validaciones en el cliente
 - **Manejo funcional de Interceptores y Guards** para la inyección automática del JWT y protección de rutas por roles
 
 ---
 
-## 🛠️ Estructura del Proyecto
+## Estructura del Proyecto
 
 El espacio de trabajo se organiza de forma clara dividiendo las responsabilidades del servidor y del cliente:
 
-- **FootballReservation.sln** -> Solución global de .NET
+- **FootballReservation.sln** -> Solución de .NET
 - **src/** -> Carpeta del Backend
   - `FootballReservation.Domain`: Entidades puras de negocio (User, Field, Reservation)
   - `FootballReservation.Application`: Interfaces, Servicios, DTOs y Validadores
   - `FootballReservation.Infrastructure`: Base de Datos (DbContext), Repositorios y Migraciones
   - `FootballReservation.Api`: Controladores, Interfaz Swagger y Middlewares
-- **football-reservation-web/** -> Carpeta del Frontend (Angular)
+- **football-reservation-web/** -> Carpeta del Frontend
   - `src/app/core/`: Elementos globales (Servicios, Interceptores, Guards, Modelos)
   - `src/app/features/`: Módulos de página (Auth, Customer-Dashboard, Admin-Dashboard)
 
 ---
 
-## 📌 Arquitectura del Frontend e Integración
+## Arquitectura del Frontend e Integración
 
-La SPA de Angular está estructurada siguiendo las mejores prácticas para asegurar un acoplamiento limpio con los endpoints de .NET:
+La arquitectura de Angular está estructurada siguiendo buenas prácticas para asegurar un acoplamiento limpio con los endpoints de .NET:
 
-1. **Autenticación en Cadena (Core/Services/AuthService):** El proceso de login/registro envía las credenciales a la API, almacena el JWT de forma segura en el LocalStorage y realiza un encadenamiento automático (switchMap) hacia el endpoint de perfil (/api/users/me) para determinar el rol del usuario en tiempo real.
+1. **Autenticación en Cadena (Core/Services/AuthService):** El proceso de login/registro envía las credenciales a la API, almacena el JWT de forma segura en el LocalStorage y realiza un encadenamiento (switchMap) hacia el endpoint de perfil (/api/users/me) para determinar el rol del usuario.
 2. **Interceptor Funcional (Core/Interceptors/Jwt):** Clona cada petición saliente dirigida a la API e inyecta dinámicamente la cabecera `Authorization: Bearer <token>`, evitando adjuntar el token de forma manual en cada servicio.
 3. **Guardia Funcional por Roles (Core/Guards/Auth):** Protege las rutas del sistema del lado del cliente. Si un usuario con rol Client intenta ingresar por URL al panel de administración, la guardia intercepta la navegación y lo redirige automáticamente a la pantalla de autenticación.
 
 ---
 
-## 💻 Pantallas Principales del Frontend
+## Pantallas Principales del Frontend
 
-- **🔐 Login / Registro Integrado:** Un componente unificado y dinámico con formularios reactivos que valida el formato de correos y la extensión de contraseñas antes de interactuar con el servidor. Redirige inteligentemente según el rol devuelto por el perfil.
-- **🏟️ Dashboard del Administrador (/admin-dashboard):** Vista protegida para cuentas con rol Admin. Dispone de un formulario reactivo controlado para el alta de canchas enlazado directamente a los DTOs de C#.
-- **🗓️ Dashboard del Cliente (/customer-dashboard):** Vista protegida para cuentas con rol Client. Muestra de manera reactiva el catálogo de canchas activas, cuenta con un formulario interactivo con selector de fecha/hora para agendar turnos (de 1 a 4 horas) y despliega un historial en tiempo real con las reservas del usuario conectado.
+- ** Login / Registro Integrado:** Un componente con formularios reactivos que valida el formato de correos y la extensión de contraseñas antes de interactuar con el servidor. Redirige según el rol devuelto por el perfil.
+- ** Dashboard del Administrador (/admin-dashboard):** Vista protegida para cuentas con rol Admin. Dispone de un formulario reactivo controlado para el alta de canchas enlazado directamente a los DTOs de C#.
+- ** Dashboard del Cliente (/customer-dashboard):** Vista protegida para cuentas con rol Client. Muestra de manera reactiva el catálogo de canchas activas, cuenta con un formulario interactivo con selector de fecha/hora para agendar turnos (de 1 a 4 horas) y despliega un historial en tiempo real con las reservas del usuario conectado.
 
 ---
 

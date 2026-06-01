@@ -1,40 +1,51 @@
-# ⚽ Sistema de Reservas de Canchas de Fútbol (Backend MVP)
+## ⚙️ Cómo Ejecutar el Ecosistema Completo
 
-Este es el backend de una plataforma de gestión y reserva de canchas de fútbol, construido con **.NET 8** siguiendo los principios de **Clean Architecture** (Arquitectura Limpia).
+### 1. Levantar el Backend
 
-## 🚀 Tecnologías Utilizadas
-- **.NET 8 Web API**
-- **Entity Framework Core** (Code-First con SQL Server)
-- **JWT (JSON Web Tokens)** para Autenticación y Autorización por Roles (`User` y `Admin`)
-- **BCrypt.Net** para el hashing seguro de contraseñas
-- **FluentValidation** para la validación automática de datos de entrada
-- **Middleware Global** para el manejo centralizado de excepciones
+1. Configurar la cadena de conexión a tu instancia de SQL Server dentro de `src/FootballReservation.Api/appsettings.json`.
 
-## 🛠️ Estructura del Proyecto
-El proyecto está dividido en 4 capas según Clean Architecture:
-1. `FootballReservation.Domain`: Entidades puras de negocio (`User`, `Field`, `Reservation`) y excepciones de dominio.
-2. `FootballReservation.Application`: Interfaces, Servicios de aplicación, DTOs y Validadores.
-3. `FootballReservation.Infrastructure`: Implementación de la Base de Datos (`AppDbContext`), Repositorios y Migraciones.
-4. `FootballReservation.Api`: Controladores, Middlewares de error, Configuración de Autenticación y Swagger.
+2. Posicionarte en la raíz y aplicar las migraciones para generar la base de datos:
 
-## 📌 Endpoints Clave de la API (Para la Integración del Frontend)
+   ```bash
+   dotnet ef database update --project src/FootballReservation.Infrastructure --startup-project src/FootballReservation.Api
+   ```
 
-Todos los endpoints devuelven respuestas en formato JSON con nomenclatura `camelCase`.
+3. Iniciar la API (correrá por defecto en el puerto configurado, ej: http://localhost:5035):
 
-### 🔐 Autenticación (Público)
-- `POST /api/auth/register`: Registra un nuevo usuario. Requiere `firstName`, `lastName`, `email`, `password`.
-- `POST /api/auth/login`: Autentica al usuario. Devuelve un objeto con los datos del usuario y un `token` JWT.
+   ```bash
+   dotnet run --project src/FootballReservation.Api
+   ```
 
-### 🏟️ Canchas (Requiere Token)
-- `GET /api/fields`: Lista todas las canchas activas (Accesible por `User` y `Admin`).
-- `POST /api/fields`: Crea una nueva cancha (Restringido solo a `Admin`). Requiere `name`, `capacity`, `pricePerHour`.
+### 2. Levantar el Frontend
 
-### 🗓️ Reservas (Requiere Token)
-- `POST /api/reservations`: Crea una reserva de 1 a 4 horas. El sistema valida automáticamente que no haya colisiones de horarios. Requiere `fieldId`, `reservationDate` (UTC formato ISO) y `durationInHours`.
+Abrir una nueva terminal e ingresar a la carpeta del cliente:
 
-## ⚙️ Cómo Ejecutar el Backend
-1. Clonar el repositorio.
-2. Configurar la cadena de conexión a SQL Server en `appsettings.json`.
-3. Ejecutar las migraciones: `dotnet ef database update --project FootballReservation.Infrastructure --startup-project FootballReservation.Api`
-4. Iniciar la API: `dotnet run --project FootballReservation.Api`
-5. Abrir el navegador en `http://localhost:XXXX/swagger` para ver la documentación interactiva.
+```bash
+cd football-reservation-web
+```
+
+Instalar las dependencias necesarias de Angular:
+
+```bash
+npm install
+```
+
+Iniciar el servidor de desarrollo local:
+
+```bash
+ng serve
+```
+
+Abrir el navegador en `http://localhost:4200` para empezar a operar la aplicación.
+
+---
+
+## 🛡️ Notas de Seguridad para el Entorno de Desarrollo
+
+### Asignación del Rol Admin
+
+Para mantener el formulario de registro público seguro, por defecto los nuevos usuarios nacen con el rol Client. Para interactuar como administrador, regístrate normalmente y modifica la columna Role directamente en tu tabla de Base de Datos al valor exacto de Admin.
+
+### CORS
+
+El backend cuenta con una política de CORS activa para permitir de manera exclusiva las peticiones asíncronas procedentes del dominio del cliente (`http://localhost:4200`).

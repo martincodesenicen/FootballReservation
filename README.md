@@ -1,13 +1,13 @@
-# ⚽ Sistema de Reservas de Canchas de Fútbol
+# Sistema de Reservas de Canchas de Fútbol
 
 Este es un ecosistema completo para la gestión y reserva de canchas de fútbol. Está compuesto por un backend en **.NET 8** diseñado bajo los principios de **Clean Architecture** y una aplicación web en **Angular**.
 
 ---
 
-## Tecnologías Utilizadas
+## Tecnologías
 
 ### Backend (.NET 8 Web API)
-- **Entity Framework Core** (Code-First con SQL Server)
+- **Entity Framework Core**
 - **JWT (JSON Web Tokens)** para Autenticación y Autorización por Roles (`Client` y `Admin`)
 - **BCrypt.Net** para el hashing seguro de contraseñas
 - **FluentValidation** para la validación automática de datos de entrada
@@ -97,7 +97,7 @@ Abrir el navegador en `http://localhost:4200` para empezar a operar la aplicaci�
 
 ---
 
-## 🛡️ Notas de Seguridad para el Entorno de Desarrollo
+## Notas para el Entorno de Desarrollo
 
 ### Asignación del Rol Admin
 
